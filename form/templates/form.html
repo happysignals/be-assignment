@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Survey</title>
+</head>
+<body>
+  <h1>{{ question }}</h1>
+  <form form="/form" method="post">
+    {% csrf_token %}
+    <p>
+      {% for i in value_range %}
+      <label><input type="radio" name="value" value="{{i}}" {% if form.value.value == i %}checked="checked"{% endif %}> {{i}}</label>
+      {% endfor %}
+    </p>
+    {{ form.value.errors }}
+    <br>
+    <p>What influenced your score the most</p>
+    {% for factor in factors %}
+      <p>
+        <label for="{{factor.slug}}"><input {% if factor.slug in form.factors.value %}checked="checked"{% endif %} type="checkbox" name="factors" value="{{factor.slug}}" id="{{factor.slug}}"> {{factor.title}}</label>
+      </p>
+    {% endfor %}
+    <br>
+    <p>{{form.comment.label}}</p>
+    {{ form.comment }}
+    {{ form.comment.errors }}
+    <p>
+      <input type="submit" value="Submit survey" />
+    </p>
+  </form>
+</body>
+</html>
